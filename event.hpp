@@ -9,13 +9,12 @@
 
 namespace rio {
 
-// Adjust size of event
 struct event : TObject {
   using element_type = int;
   static constexpr std::size_t size_in_bytes = 1024;
   static constexpr std::size_t num_elements =
       size_in_bytes / sizeof(element_type);
-  std::array<int, num_elements> d;
+  std::array<element_type, num_elements> d;
 
   event() {
     std::random_device r;
