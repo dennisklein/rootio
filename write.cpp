@@ -21,7 +21,6 @@ auto write(std::string filename, int num_events) -> int {
   for (int i(1); i < num_events; ++i) {
     event.reset();
     event_ptr = event.get();
-    tree.SetBranchAddress("event", &event_ptr);
     tree.Fill();
   }
 
