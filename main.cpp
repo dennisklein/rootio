@@ -1,10 +1,13 @@
-#include "main.hpp"
+#include "event.hpp"
+#include "read.hpp"
+#include "write.hpp"
 
 #include <TEnv.h>
 #include <TStopwatch.h>
 #include <TROOT.h>
 #include <cstring>
 #include <iostream>
+#include <random>
 #include <string>
 
 namespace rio {
@@ -29,21 +32,26 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
   std::string filename(argc >= 3 ? argv[2] : "events.root");
-  int num_events(argc >= 4 ? std::atoi(argv[3]) : 100);
+  std::size_t num_events(argc >= 4 ? std::atoi(argv[3]) : 100);
 
   // Configure ROOT
-  ROOT::EnableImplicitMT(4);
-  gEnv->SetValue("TFile.AsyncPrefetching", 1);
+  // ROOT::EnableImplicitMT(4);
+  // gEnv->SetValue("TFile.AsyncPrefetching", 1);
+
+  std::mt19937 rnd;
+  rnd.seed(555);
 
   // Run timed operation
   TStopwatch sw;
   sw.Start();
 
   int bytes(0);
+  constexpr std::size_t event_size(32);
+
   if (write) {
-    bytes = rio::write(filename, num_events);
+    bytes = rio::write<rio::fevent<event_size>>(filename, rnd, num_events);
   } else {
-    bytes = rio::read(filename);
+    std::tie(bytes, num_events) = rio::read<rio::fevent<event_size>>(filename, rnd);
   }
 
   sw.Stop();
@@ -52,8 +60,10 @@ int main(int argc, char *argv[]) {
   float MiB(bytes / (1024. * 1024.));
   auto elapsed_seconds(sw.RealTime());
   float rate_MiBps(MiB / elapsed_seconds);
-  std::cout << MiB << " MiB (" << bytes << " bytes) in " << elapsed_seconds
-            << " seconds (" << rate_MiBps << " MiB/s)." << std::endl;
+  std::cout << (write ? "wrote " : "read ")
+            << num_events << " events (" << event_size << " bytes)" << std::endl
+            << "total " << MiB << " MiB (" << bytes << " bytes)" << std::endl
+            << "in " << elapsed_seconds << " seconds (" << rate_MiBps << " MiB/s)" << std::endl;
 
   return EXIT_SUCCESS;
 }
