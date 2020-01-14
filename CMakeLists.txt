@@ -1,10 +1,11 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.5)
 project(rootio LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 14)
 find_package(ROOT REQUIRED)
 include(${ROOT_USE_FILE})
 
+include_directories(${CMAKE_SOURCE_DIR})
 ROOT_GENERATE_DICTIONARY(G__event
   event.hpp
   LINKDEF event_linkdef.hpp)

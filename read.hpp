@@ -37,8 +37,8 @@ auto read(std::string filename, std::mt19937 &rnd)
   tree->PrintCacheStats();
   std::cout << std::endl;
 
-  std::size_t bytes(tree->GetReadCache(&file)->GetBytesRead());
-  bytes += tree->GetReadCache(&file)->GetNoCacheBytesRead();
+  std::size_t bytes(file.GetCacheRead()->GetBytesRead());
+  bytes += file.GetCacheRead()->GetNoCacheBytesRead();
   file.Close();
 
   return {bytes, num_events};

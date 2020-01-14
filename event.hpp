@@ -22,7 +22,7 @@ template <std::size_t SIZE> struct fevent {
 
   auto fill_with_uniform_random_data(std::mt19937& rnd) -> void {
     std::uniform_int_distribution<element_type> dist;
-    std::for_each(d.begin(), d.end(), [&](auto &v) { v = 42; });
+    std::for_each(d.begin(), d.end(), [&](element_type &v) { v = dist(rnd); });
   }
 
   auto verify(std::mt19937& rnd) -> bool {
@@ -48,7 +48,7 @@ struct vevent {
 
   auto fill_with_uniform_random_data(std::mt19937& rnd) -> void {
     std::uniform_int_distribution<element_type> dist;
-    std::for_each(d.begin(), d.end(), [&](auto &v) { v = dist(rnd); });
+    std::for_each(d.begin(), d.end(), [&](element_type &v) { v = dist(rnd); });
   }
 
   auto verify(std::mt19937& rnd) -> bool {
