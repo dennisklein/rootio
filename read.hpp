@@ -22,7 +22,7 @@ auto read(std::string filename, std::mt19937 &rnd)
   tree->SetCacheSize(16 * 1024 * 1024);
   tree->AddBranchToCache("*", true);
 
-  auto event(std::make_unique<E>());
+  std::unique_ptr<E> event(new E());
   auto event_ptr(event.get());
   tree->SetBranchAddress("event", &event_ptr);
 

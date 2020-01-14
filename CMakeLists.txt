@@ -14,7 +14,7 @@ add_library(event SHARED
 target_include_directories(event PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 target_link_libraries(event PUBLIC
-  ROOT::Core ROOT::Tree)
+  ROOT::Core ROOT::Tree ROOT::RIO)
 
 add_executable(rio main.cpp)
 target_link_libraries(rio PRIVATE

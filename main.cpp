@@ -12,7 +12,7 @@
 
 namespace rio {
 
-auto print_usage() {
+auto print_usage() -> void {
   std::cout << "Usage: rio w [FILENAME] [NUM_EVENTS]" << std::endl
             << "       rio r [FILENAME]" << std::endl;
 }
